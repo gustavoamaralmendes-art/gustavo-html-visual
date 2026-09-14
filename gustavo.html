@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EducAcessível - Entendendo a Deficiência Visual</title>
+    <style>
+        /* CSS RESET E ESTILOS BASE DE ACESSIBILIDADE */
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #000000;
+            --primary-color: #003366;
+            --button-bg: #0055a5;
+            --button-text: #ffffff;
+            --focus-outline: #ffcc00;
+            --card-bg: #f4f4f4;
+            --border-color: #000000;
+            --font-scale: 1;
+        }
+
+        /* TEMA DE ALTO CONTRASTE */
+        body.alto-contraste {
+            --bg-color: #000000;
+            --text-color: #ffffff;
+            --primary-color: #ffff00;
+            --button-bg: #ffff00;
+            --button-text: #000000;
+            --focus-outline: #00ffff;
+            --card-bg: #1a1a1a;
+            --border-color: #ffffff;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            font-size: calc(18px * var(--font-scale));
+        }
+
+        /* ATALHO PARA TECLADO (SKIP LINK) */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--button-bg);
+            color: var(--button-text);
+            padding: 8px;
+            z-index: 100;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
+
+        /* FOCO VISÍVEL PARA NAVEGAÇÃO VIA TECLADO */
+        :focus {
+            outline: 4px solid var(--focus-outline) !important;
+            outline-offset: 2px;
+        }
+
+        /* BARRA DE ACESSIBILIDADE FIXA */
+        .accessibility-bar {
+            background-color: var(--card-bg);
+            border-bottom: 2px solid var(--border-color);
+            padding: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        /* BOTÕES GRANDES */
+        .btn {
+            background-color: var(--button-bg);
+            color: var(--button-text);
+            border: 2px solid var(--border-color);
+            padding: 12px 20px;
+            font-size: calc(16px * var(--font-scale));
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 8px;
+            min-height: 48px; /* Tamanho mínimo ao toque no celular */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        /* LAYOUT E ESTRUTURA */
+        header {
+            background-color: var(--card-bg);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        h1 {
+            font-size: calc(28px * var(--font-scale));
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: calc(24px * var(--font-scale));
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 5px;
+            margin-top: 30px;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        nav a {
+            color: var(--text-color);
+            font-weight: bold;
+            text-decoration: underline;
+            font-size: calc(18px * var(--font-scale));
+            padding: 5px 10px;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        section {
+            margin-bottom: 40px;
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* MÍDIAS (IMAGENS E VÍDEO RESPONSIVOS) */
+        .media-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+        }
+
+        .img-description {
+            font-size: calc(16px * var(--font-scale));
+            font-style: italic;
+            margin-top: 8px;
+            text-align: left;
+            background: var(--bg-color);
+            padding: 10px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* Aspect Ratio 16:9 */
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        footer {
+            background-color: var(--card-bg);
+            text-align: center;
+            padding: 20px;
+            border-top: 2px solid var(--border-color);
+            margin-top: 40px;
+        }
+
+        /* RESPONSIVIDADE PARA CELULARES */
+        @media (max-width: 600px) {
+            .accessibility-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .btn {
+                width: 100%;
+            }
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ATALHO PARA TECLADO -->
+    <a href="#conteudo-principal" class="skip-link">Ir para o conteúdo principal</a>
+
+    <!-- BARRA DE FERRAMENTAS DE ACESSIBILIDADE -->
+    <div class="accessibility-bar" aria-label="Ferramentas de Acessibilidade">
+        <button class="btn" onclick="alterarFonte(1)" aria-label="Aumentar tamanho do texto">A+ Aumentar Texto</button>
+        <button class="btn" onclick="alterarFonte(-1)" aria-label="Diminuir tamanho do texto">A- Diminuir Texto</button>
+        <button class="btn" onclick="alternarContraste()" aria-label="Alternar alto contraste">Alto Contraste</button>
+        <button class="btn" onclick="lerTexto()" aria-label="Ouvir texto da página em voz alta">🔊 Ouvir Página</button>
+        <button class="btn" onclick="pararLeitura()" aria-label="Parar leitura em voz alta">⏹️ Parar Leitura</button>
+    </div>
+
+    <!-- CABEÇALHO E NAVEGAÇÃO -->
+    <header>
+        <h1>Acessibilidade e Deficiência Visual</h1>
+        <p>Aprenda de forma simples, rápida e acessível.</p>
+        <nav aria-label="Navegação Principal">
+            <ul>
+                <li><a href="#inicio">Início</a></li>
+                <li><a href="#o-que-e">O que é?</a></li>
+                <li><a href="#dificuldades">Dificuldades</a></li>
+                <li><a href="#inclusao">Inclusão</a></li>
+                <li><a href="#tecnologias">Tecnologias</a></li>
+                <li><a href="#midia">Imagens e Vídeo</a></li>
+                <li><a href="#referencias">Referências</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main id="conteudo-principal">
+
+        <!-- PÁGINA INICIAL / INTRODUÇÃO -->
+        <section id="inicio">
+            <h2>Página Inicial</h2>
+            <p>Bem-vindo ao nosso portal educativo! Este site foi feito para ensinar todos sobre a deficiência visual. Ele foi construído com letras grandes, cores fortes e opções para ouvir o texto.</p>
+        </section>
+
+        <!-- EXPLICAÇÃO DO TEMA -->
+        <section id="o-que-e">
+            <h2>O que é Deficiência Visual?</h2>
+            <p>A deficiência visual é a perda total ou parcial da visão. Ela pode ser de dois tipos:</p>
+            <ul>
+                <li><strong>Cegueira:</strong> quando a pessoa não enxerga nada ou tem baixíssima percepção de luz.</li>
+                <li><strong>Baixa Visão (ou Visão Subnormal):</strong> quando a pessoa tem a visão bastante reduzida, mesmo usando óculos.</li>
+            </ul>
+        </section>
+
+        <!-- DIFICULDADES ENFRENTADAS -->
+        <section id="dificuldades">
+            <h2>Dificuldades Enfrentadas</h2>
+            <p>As pessoas com deficiência visual encontram barreiras no dia a dia, tais como:</p>
+            <ul>
+                <li>Calçadas esburacadas e com obstáculos sem aviso.</li>
+                <li>Falta de sinalização em Braille nos elevadores e produtos.</li>
+                <li>Sites e aplicativos que não funcionam com leitores de tela.</li>
+                <li>Preconceito e falta de informação da sociedade.</li>
+            </ul>
+        </section>
+
+        <!-- FORMAS DE INCLUSÃO -->
+        <section id="inclusao">
+            <h2>Formas de Inclusão</h2>
+            <p>A inclusão acontece quando garantimos os mesmos direitos para todos. Podemos incluir através de:</p>
+            <ul>
+                <li>Piso tátil nas ruas e estações de transporte.</li>
+                <li>Textos em Braille e materiais impressos com letras maiores.</li>
+                <li>Atendimento respeitoso, perguntando sempre se a pessoa precisa de ajuda antes de agir.</li>
+                <li>Cão-guia e bengala longa para ajudar na locomoção.</li>
+            </ul>
+        </section>
+
+        <!-- TECNOLOGIAS E RECURSOS DE APOIO -->
+        <section id="tecnologias">
+            <h2>Tecnologias e Recursos de Apoio</h2>
+            <p>A tecnologia ajuda a dar independência às pessoas com deficiência visual:</p>
+            <ul>
+                <li><strong>Leitores de Tela:</strong> programas que leem em voz alta o que está escrito no computador ou celular (ex: NVDA, TalkBack e VoiceOver).</li>
+                <li><strong>Linha Braille:</strong> aparelho que transforma o texto digital em pontos táteis de Braille.</li>
+                <li><strong>Audiodescrição:</strong> técnica que descreve em áudio as imagens, filmes e peças de teatro.</li>
+            </ul>
+        </section>
+
+        <!-- IMAGENS E VÍDEO LEGENDADO -->
+        <section id="midia">
+            <h2>Imagens e Vídeo Educativo</h2>
+
+            <!-- IMAGEM 1 -->
+            <div class="media-container">
+                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&auto=format&fit=crop" alt="Uma mulher cega caminhando na rua utilizando uma bengala branca longa para identificar obstáculos no chão.">
+                <div class="img-description">
+                    <strong>Descrição da Imagem 1:</strong> Fotografia de uma mulher com deficiência visual caminhando com auxílio de uma bengala branca longa em uma calçada urbana.
+                </div>
+            </div>
+
+            <!-- IMAGEM 2 -->
+            <div class="media-container">
+                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&auto=format&fit=crop" alt="Mãos de uma pessoa tocando um livro aberto escrito em sistema Braille com pontos relevados.">
+                <div class="img-description">
+                    <strong>Descrição da Imagem 2:</strong> Foto em plano detalhado mostrando as mãos de uma pessoa cega lendo uma página impressa em código Braille através do tátil.
+                </div>
+            </div>
+
+            <!-- VÍDEO LEGENDADO -->
+            <h3>Vídeo: Como funciona o Braille? (Com legendas)</h3>
+            <div class="media-container">
+                <div class="video-wrapper">
+                    <!-- Vídeo educativo incorporado do YouTube com legendas nativas habilitadas -->
+                    <iframe src="https://www.youtube-nocookie.com/embed/slS_iE_12-M?cc_load_policy=1" title="Vídeo demonstrativo sobre acessibilidade e deficiência visual" allowfullscreen></iframe>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONCLUSÃO -->
+        <section id="conclusao">
+            <h2>Conclusão</h2>
+            <p>Construir um mundo acessível é dever de todos. Quando adaptamos a sociedade, os sites e as cidades, garantimos autoria, autonomia e dignidade para as pessoas com deficiência visual. A inclusão melhora a vida de toda a sociedade!</p>
+        </section>
+
+        <!-- REFERÊNCIAS -->
+        <section id="referencias">
+            <h2>Referências</h2>
+            <ul>
+                <li>Organização Mundial da Saúde (OMS) - Dados sobre saúde ocular.</li>
+                <li>LBI - Lei Brasileira de Inclusão da Pessoa com Deficiência (Lei nº 13.146/2015).</li>
+                <li>W3C - Diretrizes de Acessibilidade para Conteúdo Web (WCAG 2.1).</li>
+            </ul>
+        </section>
+
+    </main>
+
+    <!-- RODAPÉ -->
+    <footer>
+        <p><strong>Site Educativo sobre Acessibilidade Visual</strong></p>
+        <p>Desenvolvido para facilitar o acesso à informação para todos os públicos.</p>
+    </footer>
+
+    <!-- JAVASCRIPT DE ACESSIBILIDADE -->
+    <script>
+        let escalaAtual = 1;
+
+        // Função para aumentar e diminuir a fonte
+        function alterarFonte(delta) {
+            escalaAtual += delta * 0.1;
+            // Limites de tamanho (mínimo 0.8x, máximo 1.6x)
+            if (escalaAtual < 0.8) escalaAtual = 0.8;
+            if (escalaAtual > 1.6) escalaAtual = 1.6;
+            
+            document.documentElement.style.setProperty('--font-scale', escalaAtual);
+        }
+
+        // Função para alternar o modo de Alto Contraste
+        function alternarContraste() {
+            document.body.classList.toggle('alto-contraste');
+        }
+
+        // Função para leitura do texto em voz alta (Web Speech API)
+        let sintetizador = window.speechSynthesis;
+        let mensagem = new SpeechSynthesisUtterance();
+
+        function lerTexto() {
+            if (sintetizador.speaking) {
+                sintetizador.cancel();
+            }
+            
+            // Pega todo o texto visível da página
+            let textoPagina = document.getElementById('conteudo-principal').innerText;
+            
+            mensagem.text = textoPagina;
+            mensagem.lang = 'pt-BR';
+            mensagem.rate = 1.0; // Velocidade normal da fala
+
+            sintetizador.speak(mensagem);
+        }
+
+        function pararLeitura() {
+            if (sintetizador.speaking) {
+                sintetizador.cancel();
+            }
+        }
+    </script>
+</body>
+</html>
